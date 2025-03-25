@@ -8,5 +8,5 @@ public class GetProductRequest
     /// <summary>
     /// The unique identifier of the Product to retrieve
     /// </summary>
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 }

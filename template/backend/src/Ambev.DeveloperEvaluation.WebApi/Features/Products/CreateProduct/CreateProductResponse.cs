@@ -10,7 +10,7 @@ public class CreateProductResponse
     /// <summary>
     /// The unique identifier of the created product
     /// </summary>
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public decimal Price { get; set; }

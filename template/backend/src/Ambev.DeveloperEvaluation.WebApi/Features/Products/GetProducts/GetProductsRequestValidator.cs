@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProducts;
 
 /// <summary>
-/// Validator for GetUserRequest
+/// Validator for GetProductsRequest
 /// </summary>
 public class GetProductsRequestValidator : AbstractValidator<GetProductsRequest>
 {

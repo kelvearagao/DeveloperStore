@@ -11,7 +11,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 /// </remarks>
 public class GetProductResult
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public string Description { get; set; } = string.Empty;

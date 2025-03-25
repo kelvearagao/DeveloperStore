@@ -72,4 +72,15 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    /// <summary>
+    /// Checks if a user exists by their unique identifier.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>True if the user exists, false otherwise.</returns>
+    public async Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>().AnyAsync(u => u.Id == userId, cancellationToken);
+    }
 }

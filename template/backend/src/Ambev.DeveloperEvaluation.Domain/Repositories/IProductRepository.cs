@@ -21,7 +21,15 @@ public interface IProductRepository
     /// <param name="id">The unique identifier of the Product</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The Product if found, null otherwise</returns>
-    Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves multiple Products by their unique identifiers
+    /// </summary>
+    /// <param name="ids">The unique identifiers of the Products</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A collection of Products if found</returns>
+    Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all Products in a paginated and ordered manner
@@ -39,5 +47,5 @@ public interface IProductRepository
     /// <param name="id">The unique identifier of the Product to delete</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the Product was deleted, false if not found</returns>
-    Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
 }

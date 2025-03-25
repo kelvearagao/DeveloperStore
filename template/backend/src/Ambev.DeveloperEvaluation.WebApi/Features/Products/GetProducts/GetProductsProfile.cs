@@ -4,12 +4,12 @@ using Ambev.DeveloperEvaluation.Application.Products.GetProducts;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProducts;
 
 /// <summary>
-/// Profile for mapping between Application and API CreateProduct responses
+/// Profile for mapping between Application and API GetProducts responses
 /// </summary>
 public class GetProductsProfile : Profile
 {
     /// <summary>
-    /// Initializes the mappings for CreateProduct feature
+    /// Initializes the mappings for Getroducts feature
     /// </summary>
     public GetProductsProfile()
     {

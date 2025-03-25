@@ -24,9 +24,11 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -54,6 +56,159 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Category A",
+                            Description = "Product A Description",
+                            Image = "product-a.jpg",
+                            Price = 10.99m,
+                            Title = "Product A"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Category B",
+                            Description = "Product B Description",
+                            Image = "product-b.jpg",
+                            Price = 20.49m,
+                            Title = "Product B"
+                        });
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Sale", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Branch")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsCancelled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("SaleNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Sales");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("5dfbd0a0-ff92-440c-a2f2-cd59309ea2dc"),
+                            Branch = "Branch A",
+                            IsCancelled = false,
+                            SaleDate = new DateTime(2025, 3, 25, 2, 28, 30, 381, DateTimeKind.Utc).AddTicks(550),
+                            SaleNumber = 1001,
+                            TotalAmount = 50.00m,
+                            UserId = new Guid("75beef65-3c82-4797-934d-11b9dff6cfad")
+                        },
+                        new
+                        {
+                            Id = new Guid("dd909f22-1a99-4319-a9fe-ac399763ef61"),
+                            Branch = "Branch B",
+                            IsCancelled = true,
+                            SaleDate = new DateTime(2025, 3, 25, 2, 28, 30, 381, DateTimeKind.Utc).AddTicks(560),
+                            SaleNumber = 1002,
+                            TotalAmount = 30.00m,
+                            UserId = new Guid("6aacbe87-4877-46d6-97b2-3e8e5cdcf895")
+                        });
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.SaleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsCancelled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SaleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("SaleItem");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Discount = 0m,
+                            IsCancelled = false,
+                            ProductId = 1,
+                            Quantity = 2,
+                            SaleId = new Guid("5dfbd0a0-ff92-440c-a2f2-cd59309ea2dc"),
+                            TotalAmount = 0m,
+                            UnitPrice = 10.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Discount = 0m,
+                            IsCancelled = false,
+                            ProductId = 2,
+                            Quantity = 1,
+                            SaleId = new Guid("5dfbd0a0-ff92-440c-a2f2-cd59309ea2dc"),
+                            TotalAmount = 0m,
+                            UnitPrice = 30.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Discount = 0m,
+                            IsCancelled = false,
+                            ProductId = 1,
+                            Quantity = 3,
+                            SaleId = new Guid("dd909f22-1a99-4319-a9fe-ac399763ef61"),
+                            TotalAmount = 0m,
+                            UnitPrice = 10.00m
+                        });
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
@@ -102,14 +257,38 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("75beef65-3c82-4797-934d-11b9dff6cfad"),
+                            CreatedAt = new DateTime(2025, 3, 25, 2, 28, 30, 381, DateTimeKind.Utc).AddTicks(370),
+                            Email = "john.doe@example.com",
+                            Password = "Ab#123123",
+                            Phone = "",
+                            Role = "None",
+                            Status = "Unknown",
+                            Username = "John Doe"
+                        },
+                        new
+                        {
+                            Id = new Guid("6aacbe87-4877-46d6-97b2-3e8e5cdcf895"),
+                            CreatedAt = new DateTime(2025, 3, 25, 2, 28, 30, 381, DateTimeKind.Utc).AddTicks(380),
+                            Email = "jane.smith@example.com",
+                            Password = "Ab#123123",
+                            Phone = "",
+                            Role = "None",
+                            Status = "Unknown",
+                            Username = "Jane Smith"
+                        });
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
                     b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.Rating", "Rating", b1 =>
                         {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid");
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Count")
                                 .HasColumnType("integer")
@@ -127,8 +306,36 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.Navigation("Rating")
+                    b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Sale", b =>
+                {
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("Ambev.DeveloperEvaluation.Domain.Entities.Sale", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.SaleItem", b =>
+                {
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Sale", null)
+                        .WithMany("Items")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Sale", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

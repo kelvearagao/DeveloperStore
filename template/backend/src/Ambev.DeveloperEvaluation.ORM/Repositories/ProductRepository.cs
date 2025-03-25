@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 
 /// <summary>
-/// Implementation of IUserRepository using Entity Framework Core
+/// Implementation of IProductRepository using Entity Framework Core
 /// </summary>
 public class ProductRepository : IProductRepository
 {
@@ -39,9 +39,22 @@ public class ProductRepository : IProductRepository
     /// <param name="id">The unique identifier of the Product</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The Product if found, null otherwise</returns>
-    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Products.FirstOrDefaultAsync(o=> o.Id == id, cancellationToken);
+    }
+
+    /// <summary>
+    /// Retrieves multiple Products by their unique identifiers
+    /// </summary>
+    /// <param name="ids">The list of unique identifiers of the Products</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A list of Products matching the provided identifiers</returns>
+    public async Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+    {
+        return await _context.Products
+            .Where(p => ids.Contains(p.Id))
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -93,7 +106,7 @@ public class ProductRepository : IProductRepository
     /// <param name="id">The unique identifier of the Product to delete</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the Product was deleted, false if not found</returns>
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         var Product = await GetByIdAsync(id, cancellationToken);
         if (Product == null)
