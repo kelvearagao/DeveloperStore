@@ -4,6 +4,8 @@
 
 Este projeto é uma aplicação backend desenvolvida para gerenciar vendas, usuários e produtos. Ele segue padrões modernos de desenvolvimento, utilizando tecnologias robustas e boas práticas para garantir escalabilidade, manutenibilidade e facilidade de uso.
 
+![Texto alternativo](/.doc/apis.png)
+
 ---
 
 ## **Organização do Projeto**
