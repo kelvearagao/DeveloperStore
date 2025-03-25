@@ -1,86 +1,134 @@
-# Developer Evaluation Project
+# **Ambev Developer Evaluation**
 
-`READ CAREFULLY`
+## **Descrição do Projeto**
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+Este projeto é uma aplicação backend desenvolvida para gerenciar vendas, usuários e produtos. Ele segue padrões modernos de desenvolvimento, utilizando tecnologias robustas e boas práticas para garantir escalabilidade, manutenibilidade e facilidade de uso.
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+---
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+## **Organização do Projeto**
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+O projeto está organizado em uma estrutura modular para separar responsabilidades e facilitar a manutenção:
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+### **1. Camadas do Projeto**
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+- **Domain**: Contém as entidades, enums e interfaces que representam o núcleo do domínio.
+- **Application**: Contém os casos de uso (handlers), comandos, validações e lógica de negócios.
+- **Infrastructure**: Contém implementações de repositórios, configurações de banco de dados e serviços externos.
+- **WebApi**: Contém os controladores e a configuração da API REST.
+- **Tests**: Contém os testes unitários e de integração.
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+### **2. Padrões Utilizados**
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+- **CQRS (Command Query Responsibility Segregation)**:
+  - Separação entre comandos (escrita) e consultas (leitura).
+- **Mediator Pattern**:
+  - Utilizado para desacoplar os handlers dos controladores, implementado com a biblioteca `MediatR`.
+- **Repository Pattern**:
+  - Abstração para acesso ao banco de dados.
+- **Dependency Injection**:
+  - Todas as dependências são injetadas para facilitar testes e modularidade.
+- **Validation**:
+  - Validações centralizadas utilizando a biblioteca `FluentValidation`.
 
-### Business Rules
+### **3. Boas Práticas**
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+- **SOLID**:
+  - O projeto segue os princípios SOLID para garantir um design limpo e extensível.
+- **Clean Code**:
+  - Código legível, com nomes descritivos e responsabilidades bem definidas.
+- **Logs**:
+  - Uso de logs detalhados para rastrear o fluxo de execução e facilitar a depuração.
+- **Testes Automatizados**:
+  - Testes unitários para garantir a qualidade e evitar regressões.
 
-These business rules define quantity-based discounting tiers and limitations:
+---
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+## **Tecnologias Utilizadas**
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+- **.NET 6**: Framework principal para desenvolvimento da aplicação.
+- **Entity Framework Core**: ORM para acesso ao banco de dados.
+- **MediatR**: Implementação do padrão Mediator.
+- **FluentValidation**: Biblioteca para validação de comandos e requisições.
+- **AutoMapper**: Biblioteca para mapeamento de objetos.
+- **Bogus**: Gerador de dados fictícios para testes.
+- **NSubstitute**: Biblioteca para criação de mocks em testes.
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+---
 
-See [Overview](/.doc/overview.md)
+## **Como Rodar o Projeto**
 
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
+### **1. Pré-requisitos**
 
-See [Tech Stack](/.doc/tech-stack.md)
+- **.NET 6 SDK** instalado.
+- **Banco de Dados PostgreSQL** configurado e rodando.
+- **Ferramenta CLI do EF Core** instalada:
 
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
+```bash
+dotnet tool install --global dotnet-ef
+```
 
-See [Frameworks](/.doc/frameworks.md)
+### **2. Configuração do Banco de Dados**
 
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
+Configure a string de conexão no arquivo `appsettings.json`:
 
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=AmbevEvaluation;Username=postgres;Password=yourpassword"
+}
+```
 
-See [Project Structure](/.doc/project-structure.md)# DeveloperStore
+### **3. Aplicar Migrations**
+
+Para criar o banco de dados e aplicar as migrations, execute:
+
+```bash
+   dotnet ef database update --project Ambev.DeveloperEvaluation.ORM --startup-project Ambev.DeveloperEvaluation.WebApi
+```
+
+### **4. Rodar o Projeto**
+
+Navegue até o diretório do projeto WebApi:
+
+```bash
+cd Ambev.DeveloperEvaluation.WebApi
+```
+
+Execute o comando:
+
+```bash
+dotnet run
+```
+
+A API estará disponível em http://localhost:5119.
+
+### **Testes**
+
+1. Rodar Testes Unitários
+   Navegue até o diretório de testes:
+
+```bash
+cd Ambev.DeveloperEvaluation.Unit
+```
+
+Execute os testes:
+
+```bash
+dotnet test
+```
+
+### **Banco de Dados**
+
+- O projeto utiliza PostgreSQL como banco de dados relacional.
+- As tabelas são gerenciadas pelo Entity Framework Core.
+- As migrations estão localizadas no diretório:
+
+```bash
+src/Ambev.DeveloperEvaluation.ORM/Migrations
+```
+
+### **Contribuição**
+
+- Siga os padrões de código definidos no projeto.
+- Certifique-se de adicionar testes para qualquer funcionalidade nova.
+- Utilize mensagens de commit claras e descritivas.
