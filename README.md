@@ -1,4 +1,4 @@
-# **Ambev Developer Evaluation**
+# **Developer Evaluation**
 
 ## **Descrição do Projeto**
 
@@ -48,7 +48,7 @@ O projeto está organizado em uma estrutura modular para separar responsabilidad
 
 ## **Tecnologias Utilizadas**
 
-- **.NET 6**: Framework principal para desenvolvimento da aplicação.
+- **.NET 8**: Framework principal para desenvolvimento da aplicação.
 - **Entity Framework Core**: ORM para acesso ao banco de dados.
 - **MediatR**: Implementação do padrão Mediator.
 - **FluentValidation**: Biblioteca para validação de comandos e requisições.
@@ -62,7 +62,7 @@ O projeto está organizado em uma estrutura modular para separar responsabilidad
 
 ### **1. Pré-requisitos**
 
-- **.NET 6 SDK** instalado.
+- **.NET 8 SDK** instalado.
 - **Banco de Dados PostgreSQL** configurado e rodando.
 - **Ferramenta CLI do EF Core** instalada:
 
